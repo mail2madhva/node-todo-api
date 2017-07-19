@@ -3,8 +3,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 var {mongoose} = require('./db/mongoose');
-var {Todo} = require('./models/Todo');
-var {User} = require('./models/User');
+var {Todo} = require('./models/todo');
+var {User} = require('./models/user');
 
 const port = process.env.PORT || 3000;
 
@@ -24,9 +24,9 @@ app.post('/todos', (req, res) => {
 });
 
 
-app.get('')
-
-
 app.listen(port, ()=> {
   console.log(`Started on Port ${port}`);
 });
+
+
+module.exports = {app};
