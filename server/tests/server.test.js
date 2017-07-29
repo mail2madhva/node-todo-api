@@ -8,10 +8,12 @@ const {ObjectID} = require('mongodb');
 
 var todos = [{
   _id: new ObjectID(),
-  text: 'Some test 1'
-}, {
+  text: 'Some test 1',
+  }, {
   _id: new ObjectID(),
-  text: 'Some test 2'
+  text: 'Some test 2',
+  completed: true,
+  completedAt: 33
 }];
 
 beforeEach((done) => {
@@ -166,3 +168,46 @@ describe('DELETE /todos/:id', () => {
 
 
 });
+
+
+
+
+describe('PATCH /todos/:id', () => {
+
+  it('should update the todo', (done) => {
+    var todo_to_update = {
+      "text": "Learn Node JS",
+      "completed": true
+    };
+
+      var hexId = todos[0]._id.toHexString();
+      request(app)
+        .patch(`/todos/${hexId}`)
+        .send(todo_to_update)
+        .expect(200)
+        .expect((res) => {
+            expect(res.body.todo.text).toBe("Learn Node JS");
+            expect(res.body.todo.completed).toBe(true);
+          }).end(done);
+  });
+
+
+  it('should clear completedAt when todo is not completed', (done) => {
+    var todo_to_update = {
+      "text": "Learn Node JS",
+      "completed": false
+    };
+
+      var hexId = todos[1]._id.toHexString();
+      request(app)
+        .patch(`/todos/${hexId}`)
+        .send(todo_to_update)
+        .expect(200)
+        .expect((res) => {
+            expect(res.body.todo.text).toBe("Learn Node JS");
+            expect(res.body.todo.completed).toBe(false);
+          }).end(done);
+  });
+
+
+})
